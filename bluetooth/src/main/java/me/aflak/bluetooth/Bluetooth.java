@@ -633,6 +633,16 @@ public class Bluetooth {
                             }
                         });
                     }
+                } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDING){
+                    context.unregisterReceiver(pairReceiver);
+                    if(discoveryCallback!=null){
+                        ThreadHelper.run(runOnUi, activity, new Runnable() {
+                            @Override
+                            public void run() {
+                                discoveryCallback.onError(DiscoveryError.FAILED_TO_PAIR);
+                            }
+                        });
+                    }
                 } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED){
                     context.unregisterReceiver(pairReceiver);
                     if(discoveryCallback!=null){
